@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecit.dao.ExaminationDao">
+
+	<insert id="insertExaminationJob" parameterType="com.ecit.entity.ExaminationJob">
+		INSERT INTO `examination_job` (
+			`code`,
+			`class_type`,
+			`class_level`,
+			`examination_type`,
+			`examination_file`,
+			`start_time`,
+			`end_time`
+		)
+		VALUES(
+			#{code},
+			#{classType},
+			#{classLevel},
+			#{examinationType},
+			#{examinationFile},
+			#{startTime},
+			#{endTime}
+		)
+	</insert>
+	
+	<update id="updateExaminationJob" parameterType="com.ecit.entity.ExaminationJob">
+		UPDATE `examination_job`
+		<set>
+			<if test="examinationFile != null">
+				`examination_file` = #{examinationFile} , 
+			</if>
+			<if test="examinationResultFile != null">
+				`examination_result_file` = #{examinationResultFile} , 
+			</if>
+		</set>
+		<where>
+			<if test="code != null">
+				`code` = #{code}
+			</if>
+		</where>
+	</update>
+	
+	<insert id="insertExaminationMessages" parameterType="list">
+		INSERT INTO `examination_message` 
+		(
+			`examination_code`,
+			`student_name`,
+			`student_card`,
+			`examination_card`
+		)
+		VALUES
+		<foreach item="item" index="index" collection="list"
+		      separator=",">
+				(
+					#{item.examinationCode},
+					#{item.studentName},
+					#{item.studentCard},
+					#{item.examinationCard}
+				)
+		</foreach>
+	
+	</insert>
+	
+	
+	<select id="queryExaminationQuestionsOption" 
+		parameterType="com.ecit.entity.ExaminationQuestionsOption" 
+			resultType="com.ecit.entity.ExaminationQuestionsOption"
+	>
+		SELECT
+			`id`,
+			`lable`,
+			`context`,
+			`uid`
+		FROM
+			`examination_Questions_option`
+		<where>
+			<if test="id != null">
+				AND `id` = #{id}
+			</if>
+			<if test="uid != null">
+				AND `uid` = #{uid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryExaminationQuestions" 
+		parameterType="com.ecit.entity.ExaminationQuestions"
+			resultType="com.ecit.entity.ExaminationQuestions">
+		SELECT 
+			`id`,
+			`stem`,
+			`Comment`,
+			`score`,
+			`examination_card` AS `examinationCode`,
+			`examination_code` AS `examinationCard`,
+			`ex_index` AS `exIndex`,
+			`is_true` AS `isTrue`,
+			`actual_chose` AS `actualChose`,
+			`uid`
+		FROM
+			`examination_Questions_message`
+		<where>
+			<if test="id != null">
+				AND `id` = #{id}
+			</if>
+			<if test="examinationCode != null">
+				AND `examination_code` = #{examinationCode}
+			</if>
+			<if test="examinationCard != null">
+				AND `examination_card` = #{examinationCard}
+			</if>
+			<if test="exIndex != null">
+				AND `ex_index` = #{exIndex}
+			</if>
+			<if test="isTrue != null">
+				AND `is_true` = #{isTrue}
+			</if>
+			<if test="actualChose != null">
+				AND `actual_chose` = #{actualChose}
+			</if>
+		</where>
+			<if test="index != null">
+				LIMIT #{index},1
+			</if>
+	</select>
+	
+	<insert id="insertExaminationQuestions" parameterType="com.ecit.entity.ExaminationQuestions">
+		INSERT INTO `examination_Questions_message`
+		(
+			`stem`,
+			`Comment`,
+			`score`,
+			`examination_card`,
+			`examination_code`,
+			`ex_index`,
+			`uid`
+		)
+		VALUES
+		(
+			#{stem},
+			#{comment},
+			#{score},
+			#{examinationCard},
+			#{examinationCode},
+			#{exIndex},
+			#{uid}
+		)
+	</insert>
+	
+	<insert id="insertExaminationQuestionsOptions" parameterType="list">
+		INSERT INTO `examination_Questions_option` 
+		(
+				`lable`,
+				`context`,
+				`uid`
+		)
+		VALUES
+		<foreach item="item" index="index" collection="list"
+		      separator=",">
+				(
+					#{item.lable},
+					#{item.context},
+					#{item.uid}
+				)
+		</foreach>
+	
+	</insert>
+	
+	<insert id="insertExaminationQuestionsAnswers" parameterType="list">
+		INSERT INTO `examination_Questions_answer` 
+		(
+				`uid`,
+				`Questions_option_lable`
+		)
+		VALUES
+		<foreach item="item" index="index" collection="list"
+		      separator=",">
+				(
+					#{item.uid},
+					#{item.questionsOptionLable}
+				)
+		</foreach>
+	
+	</insert>
+	
+	<select id="queryExaminationJobList" 
+		parameterType="com.ecit.entity.ExaminationJob" 
+			resultType="com.ecit.entity.ExaminationJob">
+		SELECT 
+			`code`,
+			`class_type` AS `classType`,
+			`class_level` AS `classLevel`,
+			`examination_type` AS `examinationType`,
+			`start_time` AS `startTime`,
+			`end_time` AS `endTime`,
+			`is_delete` AS `isDelete`,
+			`examination_file` AS `examinationFile`,
+			`examination_result_file` AS `examinationResultFile`
+		FROM `examination_job`
+		<where>
+			<if test="code != null">
+				AND `code` = #{code}
+			</if>
+			<if test="endTime != null">
+				AND `end_time` <![CDATA[ <= ]]>  #{endTime}
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="queryExaminationMessageByPar" 
+		parameterType="com.ecit.entity.ExaminationMessage" 
+			resultType="com.ecit.entity.ExaminationMessage">
+		SELECT 
+			`id`,
+			`examination_code` AS examinationCode,
+			`examination_card` AS examinationCard,
+			`student_name` AS studentName,
+			`student_card` AS studentCard
+		FROM `examination_message`
+		<where>
+			<if test="id != null">
+				AND `id` = #{id}
+			</if>
+			<if test="examinationCode != null">
+				AND `examination_code` = #{examinationCode}
+			</if>
+			<if test="examinationCard != null">
+				AND `examination_card` = #{examinationCard}
+			</if>
+			<if test="studentName != null">
+				AND `student_name` = #{studentName}
+			</if>
+			<if test="studentCard != null">
+				AND `student_card` = #{studentCard}
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="queryExaminationResultByPar" 
+		parameterType="com.ecit.entity.ExaminationResult" 
+			resultType="com.ecit.entity.ExaminationResult">
+		SELECT 
+			`id`,
+			`em_id` AS emId,
+			`real_start_time` AS realStartTime,
+			`real_end_time` AS realEndTime,
+			`score` AS score,
+			`is_pass` AS isPass,
+			`index`
+		FROM `examination_result`
+		<where>
+			<if test="id != null">
+				AND `id` = #{id}
+			</if>
+			<if test="emId != null">
+				AND `em_id` = #{emId}
+			</if>
+			<if test="index != null">
+				AND `index` = #{index}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryExaminationResultMessageByPar" 
+		parameterType="com.ecit.entity.vo.ExaminationResultMessage" 
+			resultType="com.ecit.entity.vo.ExaminationResultMessage">
+		SELECT 
+			em.`examination_code` AS examinationCode,
+			em.`examination_card` AS examinationCard,
+			em.`student_name` AS studentName,
+			em.`student_card` AS studentCard,
+			er.`real_start_time` AS realStartTime,
+			er.`real_end_time` AS realEndTime,
+			er.`score` AS score,
+			er.`is_pass` AS isPass,
+			er.`index`
+		FROM 
+		`examination_message` em ,
+		`examination_result` er
+		<where>
+			em.`id` = er.`em_id` 
+			AND 
+			er.`score` IN 
+				(
+					SELECT 
+					MAX(eri.`score`)
+					FROM 
+					`examination_message` emi ,
+					`examination_result` eri 
+					WHERE 
+					emi.`id` = eri.`em_id` 
+					<if test="examinationCode != null">
+						AND	emi.`examination_code` = #{examinationCode}
+					</if>
+					GROUP BY 
+					emi.`student_card`
+				)
+		</where>
+	</select>
+	
+	<update id="updateExaminationQuestionByPar" 
+			parameterType="com.ecit.entity.ExaminationQuestions" 
+		>
+		
+		UPDATE `examination_Questions_message`
+		
+		<set>
+			<if test="actualChose != null">
+				`actual_chose` = #{actualChose},
+			</if>
+			<if test="isTrue != null">
+				`is_true` = #{isTrue},
+			</if>
+		</set>
+		
+		<where>
+			<if test="id != null">
+				`id` = #{id}
+			</if>
+		</where>
+		
+	</update>
+	
+	<update id="updateExaminationResultByPar" 
+			parameterType="com.ecit.entity.ExaminationResult" 
+		>
+		UPDATE `examination_result`
+		
+		<set>
+			<if test="realEndTime != null">
+				`real_end_time` = #{realEndTime},
+			</if>
+			<if test="score != null">
+				`score` = #{score},
+			</if>
+			<if test="isPass != null">
+				`is_pass` = #{isPass},
+			</if>
+		</set>
+		
+		<where>
+			<if test="id != null">
+				AND `id` = #{id}
+			</if>
+			<if test="emId != null">
+				AND `em_id` = #{emId}
+			</if>
+			<if test="index != null">
+				AND `index` = #{index}
+			</if>
+		</where>
+		
+	</update>
+	
+	
+	<insert id="insertExaminationResult" 
+		parameterType="com.ecit.entity.ExaminationResult">
+		INSERT INTO `examination_result` 
+			(
+					`em_id`,
+					`real_start_time`,
+					`real_end_time`,
+					`score`,
+					`is_pass`,
+					`index`
+			)
+		VALUES
+			(
+				#{emId},
+				#{realStartTime},
+				#{realEndTime},
+				#{score},
+				#{isPass},
+				#{index}
+			)
+	</insert>
+	
+	<select id="queryExaminationQuestionsAnswer"
+		parameterType="com.ecit.entity.ExaminationQuestionsAnswer"
+			resultType="com.ecit.entity.ExaminationQuestionsAnswer"
+	>
+		SELECT 
+			`id`,
+			`Questions_option_lable` AS `questionsOptionLable`,
+			`uid`
+		FROM
+			`examination_Questions_answer`
+		<where>
+			<if test="uid != null">
+				AND `uid` = #{uid}
+			</if>
+		</where>
+	</select>
+	
+	
+</mapper>

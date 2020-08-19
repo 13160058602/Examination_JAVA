@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecit.dao.UserDao">
+	
+	
+	<select id="queryUserTypeList" 
+		resultType="com.ecit.entity.UserType" 
+		parameterType="com.ecit.entity.UserType"
+		>
+		
+		SELECT 
+			*
+		FROM `user_type` ut 
+		<where>
+			<if test="withOut != null">
+				`with_out` = #{withOut}
+			</if>
+		
+		</where>
+	</select>
+	
+	
+	<select id="queryUserByPar" 
+		resultType="com.ecit.entity.User" 
+		parameterType="com.ecit.entity.User" >
+		
+		SELECT 
+			u.`id`,
+			u.`user_name` AS `userName`,
+			u.`pass_word` AS `passWord`,
+			u.`sex` AS `sex`,
+			u.`age` AS `age`,
+			u.`phone` AS `phone`,
+			u.`id_card` AS `idCard`,
+			u.`user_type` AS `userTypeId`,
+			ut.`name` AS `userTypeName`,
+			u.`create_time` AS `createTime`,
+			u.`update_time` AS `updateTime`,
+			u.`is_delete` AS `isDelete`,
+			u.`stuts`,
+			u.`real_name` AS `realName`,
+			ut.`with_out` AS `withOut`
+		FROM `user` u , `user_type` ut 
+		<where>
+			u.`user_type` = ut.`id`
+			<if test="userNameLike != null and userNameLike != ''">
+				AND
+				u.`user_name` like #{userNameLike}
+			</if>
+			
+			<if test="userName != null">
+				AND
+				u.`user_name` = #{userName}
+			</if>
+			<if test="passWord != null">
+				AND
+				u.`pass_word` = MD5(#{passWord})
+			</if>
+			<if test="isDelete != null">
+				AND
+				u.`is_delete` = #{isDelete}
+			</if>
+			<if test="stuts != null">
+				AND
+				u.`stuts` = #{stuts}
+			</if>
+			<if test="withOut != null">
+				AND
+				ut.`with_out` = #{withOut}
+			</if>
+			<if test="index != null and size != null">
+				limit #{index},#{size}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertUser" 
+		parameterType="com.ecit.entity.User" >
+		INSERT INTO `user` 
+		(
+			`user_name`,
+			`pass_word`,
+			`sex`,
+			`age`,
+			`phone`,
+			`id_card`,
+			`user_type`,
+			`create_time`,
+			`update_time`,
+			`real_name`
+		)
+		VALUES 
+		(
+			#{userName},
+			MD5(#{passWord}),
+			#{sex},
+			#{age},
+			#{phone},
+			#{idCard},
+			#{userTypeId},
+			NOW(),
+			NOW(),
+			#{realName}
+		)
+	</insert>
+	
+	<update id="updateUser" 
+		parameterType="com.ecit.entity.User" >
+		
+		UPDATE `user` 
+		<set>
+			<if test="stuts != null">
+				`stuts` = #{stuts}				
+			</if>
+		</set> 
+		<where>
+			`id` = #{id}
+		</where>
+	</update>
+</mapper>

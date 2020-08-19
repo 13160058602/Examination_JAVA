@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecit.dao.QuestionsDao">
+
+	<insert id="insertQuestions" parameterType="com.ecit.entity.Questions">
+		INSERT INTO `Questions_message` 
+			(
+				`stem`,
+				`Comment`,
+				`score`,
+				`class_type`,
+				`class_level`,
+				`uid`
+			)
+		VALUES
+			(
+				#{stem},
+				#{comment},
+				#{score},
+				#{classType},
+				#{classLevel},
+				#{uid}
+			)
+	</insert>	
+	<insert id="insertQuestionsAnswer" parameterType="list">
+		INSERT INTO `Questions_answer` 
+			(
+				`uid`,
+				`Questions_option_lable`
+			)
+		VALUES
+			<foreach item="item" index="index" collection="list"
+			      separator=",">
+					(
+						#{item.uid},
+						#{item.questionsOptionLable}
+					)
+			</foreach>
+	</insert>	
+	<insert id="insertQuestionsOption" parameterType="com.ecit.entity.QuestionsOption">
+		INSERT INTO `Questions_option` 
+			(
+				`lable`,
+				`context`,
+				`uid`
+			)
+		VALUES
+			
+			<foreach item="item" index="index" collection="list"
+			      separator=",">
+			      (
+						#{item.lable},
+						#{item.context},
+						#{item.uid}
+					)
+			</foreach>
+	</insert>	
+	
+	
+	<select id="quertyQuestions" parameterType="com.ecit.entity.Questions" 
+		resultType="com.ecit.entity.Questions">
+				SELECT
+					`id`,
+					`stem`,
+					`comment`,
+					`score`,
+					`class_type` AS `classType`,
+					`class_level` AS `classLevel`,
+					`uid`
+				FROM 
+					`Questions_message`
+			<where>
+				<if test="classType != null">
+					AND `class_type` = #{classType}
+				</if>
+				<if test="classLevel != null">
+					AND `class_level` = #{classLevel}
+				</if>
+			</where>
+	</select>
+	
+	<select id="quertyQuestionsAnswer" parameterType="com.ecit.entity.QuestionsAnswer" 
+		resultType="com.ecit.entity.QuestionsAnswer">
+				SELECT
+					`id`,
+					`uid`,
+					`Questions_option_lable` AS `questionsOptionLable`
+				FROM
+					`Questions_answer`
+				<where>
+					<if test="uid!=null">
+						AND `uid` = #{uid}
+					</if>
+				</where>
+	</select>
+	
+	<select id="quertyQuestionsOption" parameterType="com.ecit.entity.QuestionsOption" 
+		resultType="com.ecit.entity.QuestionsOption">
+				SELECT
+					`id`,
+					`lable`,
+					`context`,
+					`uid`
+				FROM
+					`Questions_option`
+				<where>
+					<if test="uid!=null">
+						AND `uid` = #{uid}
+					</if>
+				</where>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

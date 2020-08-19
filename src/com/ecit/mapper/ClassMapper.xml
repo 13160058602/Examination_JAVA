@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecit.dao.ClassDao">
+
+	<select id="queryClassList" 
+		resultType="com.ecit.entity.ClassMessage" 
+		parameterType="com.ecit.entity.ClassMessage"
+		>
+		
+		SELECT 
+			cm.`id`,
+			cm.`name`,
+			cm.`user_id` AS `userId`,
+			u.`real_name` AS `realName`,
+			cm.`class_type` AS `classTypeId`,
+			ct.`name` AS `classTypeName`,
+			cm.`class_level` AS `classLevelId`,
+			cl.`name` AS `classLevelName`,
+			cm.`total_score` AS `totalScore`,
+			cm.`passing_grade` AS `passingGrade`,
+			cm.`create_time` AS `createTime`,
+			cm.`update_time` AS `updateTime`,
+			cm.`cycle`,
+			cm.`is_delete` AS `idDelete`
+		FROM 
+			`class_message` cm , 
+			`class_type` ct,
+			`class_level` cl,
+			`user` u
+		<where>
+			cm.class_type = ct.id
+			AND
+			cm.class_level = cl.id
+			AND
+			cm.user_id = u.id
+			<if test="nameLike != null">
+				AND
+				cm.`name` like #{nameLike}
+			</if>
+			<if test="classTypeId != null">
+				AND
+				cm.`class_type` = #{classTypeId}
+			</if>
+			<if test="classLevelId != null">
+				AND
+				cm.`class_level` = #{classLevelId}
+			</if>
+			<if test="userId != null">
+				AND
+				cm.`user_id` = #{userId}
+			</if>
+			<if test="id != null">
+				AND
+				cm.`id` = #{id}
+			</if>
+			<if test="index != null and size != null">
+				limit #{index},#{size}
+			</if>
+		</where>
+	
+	</select>
+	
+	<select id="queryClassTypeList" 
+		resultType="com.ecit.entity.ClassType" 
+		>
+		SELECT * FROM `class_type`
+	</select>
+	
+	<select id="queryClassLevelByTypeId" 
+		resultType="com.ecit.entity.ClassLevel" 
+		parameterType="int"
+		>
+		SELECT * FROM `class_level`
+		<where>
+			`type_id` = #{typeId}			
+		</where>
+	</select>
+	
+	<insert id="insertClassMessage" 
+		parameterType="com.ecit.entity.ClassMessage">
+		INSERT INTO `class_message`
+		(
+			`name`,
+			`user_id`,
+			`class_type`,
+			`class_level`,
+			`total_score`,
+			`passing_grade`,
+			`create_time`,
+			`update_time`,
+			`cycle`
+		)
+			VALUES
+		(
+			#{name},
+			#{userId},
+			#{classTypeId},
+			#{classLevelId},
+			#{totalScore},
+			#{passingGrade},
+			NOW(),
+			NOW(),
+			#{cycle}
+		)
+	</insert>
+</mapper>

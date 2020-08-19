@@ -1,0 +1,93 @@
+/* 全局CSS 定义 */
+body{margin:0px;padding:0px;background:#FFF;color:#535353;font:normal 12px SimSun}
+div,form,ul,ol,li,span,p,dl,dt,dd,img{margin:0;padding:0;border:0;}
+h1,h2,h3,h4,h5,h6,input{margin:0;padding:0;font-size:12px;font-weight:normal;}
+ul,ol,li{list-style:none}
+em{font-style:normal}
+table,textarea{font-size:12px}
+a{color:#535353;text-decoration:none;outline:none;}
+a:hover{color:#9e0000;text-decoration:underline;}
+.area{overflow:hidden;clear:both;zoom:1}
+/* 栏目标题 */
+.columnTit{text-align:right;line-height:30px;}
+.columnTit span{float:left;}
+/* 常见颜色 */
+.coloRed1,.coloRed1-a a{color:red;}
+.coloRed2,.coloRed2-a a{color:#9e0000;}
+.coloBlue,.coloBlue-a a{color:#16387c;}
+.coloGray,.coloGray-a a{color:gray;}
+/* 文字列表 */
+.textList2 li{clear:both;vertical-align:bottom;line-height:18px;}
+.textList2 p{float:left;overflow:hidden}
+.textList2 span{float:right;overflow:hidden;text-align:right;}
+/* 普通组图 */
+.pp li{float:left;display:inline;line-height:18px}
+.pp li img{display:block}
+.pp li span{display:block;text-align:center;margin-top:3px;}
+/* 图文混排 */
+.pt{overflow:hidden;line-height:18px;}
+.pt div{float:left;}
+.pt div span{display:block;text-align:center;}
+.pt p{float:right;}
+.pt h4,.pt ul{float:right;white-space:nowrap;overflow:hidden}
+/* 关键字 */
+.keyWord a{float:left;overflow:visible;white-space:nowrap;}
+/* 分页 */
+.page a {border:1px solid #D9D9D9;display:inline-block;margin-left:5px;padding: 4px 8px;}
+/* 常用属性 */
+.float_L{float:left;}
+.float_R{float:right;}
+.border{border:1px solid #c6d8e0;overflow:hidden;zoom:1;}
+.fontYaHei{font-family:"Microsoft YaHei", "微软雅黑", "宋体";}
+.text2em{text-indent:2em;}
+.textHide{text-indent:-2000px;}
+.hidden{display:none}
+.show{display:block!important}
+.head,.main,.footer,.friendLink{margin:0px auto;}
+/* 铁血基本弹出层 */
+.pub_Pop_Style{border:1px solid #aaaaaa;position:absolute;z-index:110;display:none;background:#FFF;box-shadow:0 0 8px rgba(0,0,0,0.2);border-radius:5px;overflow:hidden;zoom:1}
+.pub_Pop_Style iframe{display:none;}
+.pop_bar{background:#eaeaea;border-bottom:1px solid #cccccc;height:35px;overflow:hidden;cursor:move;border-radius:5px 5px 0 0;}
+.ui_layerTit{padding-left:12px;line-height:36px;color:#000;font-size:13px;font-weight:bold;}
+.closeLayer{width:18px;height:18px;background:url(http://r.itiexue.net/global/images/pop_norepeat_bg2.gif) no-repeat 0 0;margin:10px 10px 0 0;cursor:pointer;display:inline; transition:transform ease .5s;-ms-transition:transform ease .5s;
+-webkit-transition:transform ease .5s;-moz-transition:transform ease .5s;-o-transition:transform ease .5s;}
+.closeLayer:hover{transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg);-webkit-transform:rotate(180deg);*background-position:0 -18px;}
+#zheZhaoLayer{background:#FFF;width:100%;position:absolute;z-index:100;top:0;left:0;display:none}
+.PopLayerBtn{width:100%;position:absolute;bottom:0;left:0;padding-top:8px;background:#eaeaea;height:29px;border-top:1px solid #CCC;border-radius: 0 0 5px 5px;clear:both;text-align:right;overflow:hidden}
+.PopLayerBtn input{width:70px;margin-right:10px;height:23px;}
+.onloadBeforMsg{width:86px;height:36px;text-align:center;background:url(http://r.itiexue.net/global/images/loading.gif) no-repeat 25px 15px;position:relative;left:50%;top:50%;margin:-18px 0 0 -43px;color:#999;}
+.pub_Pop_Style .onloadBeforMsg{margin-top:-55px;}
+/*右侧悬浮基本样式*/
+#fixedBtn { font-family:'微软雅黑'; height: 165px; overflow: hidden; position: fixed; width: 54px; }
+#fixedBtn a {display: block; font-size: 17px; height: 54px; line-height: 54px; margin-top: 1px; text-align: center;width: 54px;background:#b2b2b2;color: #fff;}
+#fixedBtn a:hover { background: #7C7C7C; color: #fff; text-decoration: none; text-indent: 0;}
+/*英文版入口*/
+.eng {width: 80px;line-height: 30px;background: #4d4b40;float:right;text-align:center;margin-left:9px;}
+.eng a{color:#fff;display:block;}
+/*CSS3动画*/
+.shake {
+ animation: shake 1s ease 0s;
+ -moz-animation: shake 1s ease 0s;
+ -webkit-animation: shake 1s ease 0s;
+ -o-animation: shake 1s ease 0s;
+ }
+@-webkit-keyframes shake {
+    0%, 100% {-webkit-transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {-webkit-transform: translateX(-10px);}
+    20%, 40%, 60%, 80% {-webkit-transform: translateX(10px);}
+}
+@-moz-keyframes shake {
+    0%, 100% {-moz-transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {-moz-transform: translateX(-10px);}
+    20%, 40%, 60%, 80% {-moz-transform: translateX(10px);}
+}
+@-o-keyframes shake {
+    0%, 100% {-o-transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {-o-transform: translateX(-10px);}
+    20%, 40%, 60%, 80% {-o-transform: translateX(10px);}
+}
+@keyframes shake {
+    0%, 100% {transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
+    20%, 40%, 60%, 80% {transform: translateX(10px);}
+}

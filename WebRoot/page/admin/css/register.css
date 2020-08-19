@@ -1,0 +1,28 @@
+/* CSS Document */
+
+*{
+	margin:0px;
+	border:0px;
+	padding:0px;
+}
+#box{
+	width:957px;
+	height:700px;
+	background:#ddd;
+	margin:67px auto;
+	padding-bottom:20px;
+	border-radius:5px;
+}
+#box h1{
+	font-size: 20px;
+	color: #999;
+	background: #f3f3f3;
+	line-height: 42px;
+	font-family: 微软雅黑;
+}
+#main{
+	width:804px;
+	height:auto;
+	margin:25px 0 0 140px;
+}
+

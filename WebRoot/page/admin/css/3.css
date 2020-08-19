@@ -1,0 +1,22 @@
+/* CSS Document */
+
+*{
+	margin:0px;
+	padding:0px;
+	border:0px;}
+#right{
+	float:left;
+	width:89%;
+	height:859px;}
+#jg{
+	width:100%;
+	height:3px;
+	background:#09877E;
+	float:left;}
+#tj{
+	float:right;}
+#tj a{
+	text-decoration:none;
+	color:#333;}
+#tj a:hover{
+	text-shadow:0 0 1px #777;}

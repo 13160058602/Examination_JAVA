@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecit.dao.JobDao">
+
+	<insert id="insertJob" 
+		parameterType="com.ecit.entity.Job">
+		INSERT INTO `job`
+		(
+			`code`,
+			`user_id`
+		)
+			VALUES
+		(
+			#{code},
+			#{userId}
+		)
+	</insert>
+	<update id="updateJob" 
+		parameterType="com.ecit.entity.Job">
+		UPDATE `job`
+		<set>
+			`stuts` = #{stuts}
+		</set>
+		<where>
+			`id` = #{id}
+		</where>
+	</update>
+	<insert id="insertUploadFile" 
+		parameterType="list">
+		INSERT INTO `upload_file_list`
+		(
+			`file_name`,
+			`file_path`,
+			`job_code`,
+			`class_type`,
+			`class_level`,
+			`user_id`
+		)
+			VALUES
+		<foreach item="item" index="index" collection="list"
+		      separator=",">
+		       (
+		       		#{item.fileName},
+		       		#{item.filePath},
+		       		#{item.jobCode},
+		       		#{item.classType},
+		       		#{item.classLevel},
+		       		#{item.userId}
+		       )
+		</foreach>
+	</insert>
+	
+	<select id="queryJob" 
+		parameterType="com.ecit.entity.Job" 
+		resultType="com.ecit.entity.Job">
+		SELECT 
+			`id`,
+			`code`,
+			`stuts`,
+			`weight`,
+			`user_id` AS `userId`
+		FROM
+			`job`
+		<where>
+			<if test="stuts!=null">
+				`stuts` = #{stuts}
+			</if>
+			<if test="userId!=null">
+				`user_id` = #{userId}
+			</if>
+		</where>
+		ORDER BY `id` DESC
+	</select>
+	
+	<select id="queryUploadFile" 
+		parameterType="String" 
+		resultType="com.ecit.entity.UploadFile">
+		SELECT 
+			`id`,
+			`file_name` `fileName`,
+			`file_path` `filePath`,
+			`job_code` `jobCode`,
+			`class_type` `classType`,
+			`class_level` `classLevel`,
+			`user_id` `userId`
+		FROM
+			`upload_file_list`
+		<where>
+			<if test="jobCode!=null">
+				`job_code` = #{jobCode}
+			</if>
+		</where>
+	</select>
+	
+	
+</mapper>
